@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TravelBloom - Home</title>
+    <title>TravelBloom - About Us</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
@@ -78,22 +78,18 @@
             <a href="about.html">About Us</a>
             <a href="contact.html">Contact Us</a>
         </div>
-        <div class="search-container">
-            <input type="text" id="searchInput" placeholder="Enter destination..." 
-                   onkeypress="if(event.key === 'Enter') handleSearch()">
-            <button onclick="handleSearch()">Search</button>
-            <button onclick="clearResults()">Clear</button>
-        </div>
     </nav>
 
-    <section class="hero">
-        <h1>EXPLORE DREAM DESTINATION</h1>
-        <p>It encourages exploration of unfamiliar territories...</p>
-        <button>BOOK NOW</button>
+    <section class="about-content">
+        <h2>About TravelBloom</h2>
+        <p>We are passionate about travel...</p>
+            <div class="team-members">
+                <div class="member">
+                    <h4>John Doe</h4>
+                    <p>CEO & Founder</p>
+                </div>
+                <!-- Add more team members -->
+        </div>
     </section>
-
-    <div class="results-container" id="results"></div>
-
-    <script src="travel_recommendation.js"></script>
 </body>
 </html>

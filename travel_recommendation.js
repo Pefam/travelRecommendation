@@ -1,29 +1,43 @@
-// Fetch data from JSON
 let travelData = [];
 
-fetch('travel_recommendation_api.json')
-    .then(response => response.json())
-    .then(data => {
-        travelData = data;
-        console.log('Data loaded:', data);
-    })
-    .catch(error => console.error('Error loading data:', error));
+// Only initialize search functionality on home page
+if (document.getElementById('searchInput')) {
+    fetch('travel_recommendation_api.json')
+        .then(response => response.json())
+        .then(data => {
+            travelData = data;
+            console.log('Data loaded:', data);
+        })
+        .catch(error => console.error('Error loading data:', error));
+}
 
 function handleSearch() {
     const searchTerm = document.getElementById('searchInput').value.toLowerCase();
     const resultsContainer = document.getElementById('results');
-    resultsContainer.innerHTML = ''; // Clear previous results
+    resultsContainer.innerHTML = '';
 
     let recommendations = [];
     
-    if (searchTerm.includes('beach')) {
-        recommendations = [...travelData.beaches];
-    } else if (searchTerm.includes('temple')) {
-        recommendations = [...travelData.temples];
-    } else if (searchTerm.includes('country')) {
-        travelData.countries.forEach(country => {
-            recommendations.push(...country.cities);
-        });
+    // Improved keyword matching
+    const normalizedTerm = searchTerm.replace(/s$/, ''); // Remove trailing 's'
+    switch(normalizedTerm) {
+        case 'beach':
+        case 'beache':
+            recommendations = [...travelData.beaches];
+            break;
+        case 'temple':
+            recommendations = [...travelData.temples];
+            break;
+        case 'countri':
+        case 'country':
+            travelData.countries.forEach(country => {
+                recommendations.push(...country.cities);
+            });
+            break;
+        default:
+            if (searchTerm.includes('beach')) recommendations = [...travelData.beaches];
+            else if (searchTerm.includes('temple')) recommendations = [...travelData.temples];
+            else if (searchTerm.includes('countr')) recommendations = travelData.countries.flatMap(c => c.cities);
     }
 
     displayRecommendations(recommendations);
@@ -51,20 +65,4 @@ function displayRecommendations(recommendations) {
 function clearResults() {
     document.getElementById('results').innerHTML = '';
     document.getElementById('searchInput').value = '';
-}
-
-// Navigation handling
-document.querySelectorAll('.nav-links a').forEach(link => {
-    link.addEventListener('click', (e) => {
-        e.preventDefault();
-        const page = link.getAttribute('href').substring(1);
-        showPage(page);
-    });
-});
-
-function showPage(page) {
-    document.querySelectorAll('section').forEach(section => {
-        section.style.display = 'none';
-    });
-    document.getElementById(page).style.display = 'block';
 }
